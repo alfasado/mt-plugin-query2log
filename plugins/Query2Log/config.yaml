@@ -9,8 +9,12 @@ description: '<__trans phrase="Query params to system log.">'
 config_settings:
     Query2LogDebugMode:
         default: 0
+    Query2LogAtError:
+        default: 1
 callbacks:
     post_run: $query2log::Query2Log::Plugin::_post_run
+    template_param.error: $query2log::Query2Log::Plugin::_error
+    MT::Log::post_save: $query2log::Query2Log::Plugin::_error_log
 tags:
     function:
         Query2Log: $query2log::Query2Log::Plugin::_hdlr_query2log
