@@ -1,39 +1,16 @@
 id  : Query2Log
 key : query2log
 name: Query2Log
-version: 0.1
+version: 0.2
 author_name: Alfasado Inc.
 author_link: http://alfasado.net/
 l10n_class: Query2Log::L10N
 description: '<__trans phrase="Query params to system log.">'
+config_settings:
+    Query2LogDebugMode:
+        default: 0
+callbacks:
+    post_run: $query2log::Query2Log::Plugin::_post_run
 tags:
     function:
-        Query2Log: >
-                sub {
-                    my ( $ctx, $args, $cond ) = @_;
-                    my $message = $args->{ message } or '';
-                    if ( $message ) {
-                        $message .= ' : ';
-                    }
-                    my $app = MT->instance;
-                    if ( (ref $app) !~ /^MT::App::/ ) {
-                        return '';
-                    }
-                    my $q = $app->query_string;
-                    if ( $args->{ url } ) {
-                        my $sep = '';
-                        if ( $q ) {
-                            $sep = '?';
-                        }
-                        $q = $app->base . $app->path . $app->script . $sep . $q;
-                    }
-                    $message .= $q;
-                    $app->log( {
-                            message => $message,
-                            level => 4,
-                    } );
-                    if ( $args->{ print } ) {
-                        return $message;
-                    }
-                    return '';
-                }
+        Query2Log: $query2log::Query2Log::Plugin::_hdlr_query2log
