@@ -42,7 +42,6 @@ sub _error_log {
     return 1 if $obj->level != MT::Log::ERROR();
     return 1 if $obj->category eq 'query2log';
     if ( MT->config( 'Query2LogAtError' ) ) {
-        
         $app->log( {
                 message => $obj->message .
                 ' : ' . $app->query_string,
@@ -55,7 +54,7 @@ sub _error_log {
 
 sub _hdlr_query2log {
     my ( $ctx, $args, $cond ) = @_;
-    my $message = $args->{ message } or '';
+    my $message = $args->{ message } || '';
     if ( $message ) {
         $message .= ' : ';
     }
